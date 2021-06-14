@@ -8,16 +8,16 @@ read -p 'Port Tujuan : ' portvar
 filepath="$pathvar/$domainvar.conf"
 #echo $filepath
 echo "<VirtualHost *:80>
-ServerName $domainvar
+		ProxyPreserveHost On
 
-ServerAdmin contact@adfazmedia.com
+        ProxyPass / http://127.0.0.1:$portvar/
+        ProxyPassReverse / http://127.0.0.1:$portvar/
 
-ErrorLog ${APACHE_LOG_DIR}/error.log
-CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ServerName $domainvar
+		ServerAlias $domainvar
 
-ProxyPreserveHost On
-ProxyPass / http://127.0.0.1:$portvar/
-ProxyPassReverse / http://127.0.0.1:$portvar/
+        ErrorLog /var/log/apache2/$domainvar-error.log
+        CustomLog /var/log/apache2/$domainvar-access.log combined
 </VirtualHost>" >> $filepath
 
 echo 'Activating conf'
